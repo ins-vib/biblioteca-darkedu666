@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <title>Catàleg - Biblioteca Municipal</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(45deg, #f3f4f6, #e5e7eb);
+        }
+
+        .catalog-header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #1f2937;
+        }
+
+        .search-bar {
+            max-width: 600px;
+            margin: 0 auto 30px;
+            padding: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .book-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .book-cover {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .book-info {
+            padding: 15px;
+        }
+
+        .book-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0 0 5px 0;
+            color: #1f2937;
+        }
+
+        .book-author {
+            color: #6b7280;
+            margin: 0 0 10px 0;
+        }
+
+        .book-status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .available {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .borrowed {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .filter-section {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filter-button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            background: white;
+            color: #4b5563;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-button:hover {
+            background: #1f2937;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="catalog-header">
+        <h1>Catàleg de la Biblioteca</h1>
+    </div>
+
+    <div class="search-bar">
+        <input type="text" placeholder="Cerca per títol, autor o gènere...">
+    </div>
+
+    <div class="filter-section">
+        <button class="filter-button">Tots</button>
+        <button class="filter-button">Novel·la</button>
+        <button class="filter-button">Assaig</button>
+        <button class="filter-button">Infantil</button>
+        <button class="filter-button">Història</button>
+    </div>
+
+    <div class="catalog-grid">
+        <div class="book-card">
+            <img src="https://covers.openlibrary.org/b/id/8231990-L.jpg" class="book-cover" alt="Llibre 1">
+            <div class="book-info">
+                <h3 class="book-title">El nom del vent</h3>
+                <p class="book-author">Patrick Rothfuss</p>
+                <span class="book-status available">Disponible</span>
+            </div>
+        </div>
+
+        <div class="book-card">
+            <img src="https://covers.openlibrary.org/b/id/12645114-L.jpg" class="book-cover" alt="Llibre 2">
+            <div class="book-info">
+                <h3 class="book-title">1984</h3>
+                <p class="book-author">George Orwell</p>
+                <span class="book-status borrowed">Prestat</span>
+            </div>
+        </div>
+
+        <div class="book-card">
+            <img src="https://covers.openlibrary.org/b/id/8314135-L.jpg" class="book-cover" alt="Llibre 3">
+            <div class="book-info">
+                <h3 class="book-title">Cien años de soledad</h3>
+                <p class="book-author">Gabriel García Márquez</p>
+                <span class="book-status available">Disponible</span>
+            </div>
+        </div>
+
+        <div class="book-card">
+            <img src="https://covers.openlibrary.org/b/id/12547716-L.jpg" class="book-cover" alt="Llibre 4">
+            <div class="book-info">
+                <h3 class="book-title">La plaça del Diamant</h3>
+                <p class="book-author">Mercè Rodoreda</p>
+                <span class="book-status available">Disponible</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Funcionalidad de búsqueda
+        const searchInput = document.querySelector('.search-bar input');
+        const bookCards = document.querySelectorAll('.book-card');
+
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            
+            bookCards.forEach(card => {
+                const title = card.querySelector('.book-title').textContent.toLowerCase();
+                const author = card.querySelector('.book-author').textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || author.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Funcionalidad de filtros
+        const filterButtons = document.querySelectorAll('.filter-button');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                filterButtons.forEach(btn => btn.style.background = 'white');
+                button.style.background = '#1f2937';
+                button.style.color = 'white';
+            });
+        });
+    </script>
+</body>
+</html>
